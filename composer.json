@@ -1,0 +1,27 @@
+{
+    "name": "mopa/remote-update-bundle",
+    "type": "symfony-bundle",
+    "description": "Remote update Bundle",
+    "keywords": ["symfony2", "composer", "remote", "update", "deploy"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Philipp A. Mohrenweiser",
+            "email": "phiamo@googlemail.com"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/phiamo/MopaRemoteUpdateBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "mopa/wsse-authentication-bundle"
+    },
+    "autoload": {
+        "psr-0": {
+            "Mopa\\Bundle\\RemoteUpdateBundle": ""
+        }
+    },
+    "target-dir": "Mopa/Bundle/RemoteUpdateBundle"
+}
