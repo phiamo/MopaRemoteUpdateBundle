@@ -1,0 +1,6 @@
+doctrine:
+    dbal:
+        connections:
+            mopa_remote_update:
+                driver: pdo_sqlite
+                path: %kernel.root_dir%/Resources/remote_update.sqlite
