@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('mopa_remote_update');
-        //$this->addRemotesConfig($rootNode);
+        $this->addRemotesConfig($rootNode);
         $this->addLocalConfig($rootNode);
         return $treeBuilder;
     }
@@ -32,23 +32,16 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
     }
-    protected function addRemoteConfig(ArrayNodeDefinition $rootNode){
+    protected function addRemotesConfig(ArrayNodeDefinition $rootNode){
         $rootNode
             ->children()
                 ->arrayNode('remotes')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->booleanNode('render_fieldset')
-                            ->defaultValue(true)
-                            ->end()
-                        ->booleanNode('show_legend')
-                            ->defaultValue(true)
-                            ->end()
-                        ->booleanNode('show_child_legend')
-                            ->defaultValue(false)
-                            ->end()
-                        ->scalarNode('error_type')
-                            ->defaultValue('inline')
+                    ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('name')
+                    ->prototype('variable')
+                        ->validate()
+                            ->ifTrue(function($v) { return !is_array($v); })
+                            ->thenInvalid('The mopa_remote_update.remotes config %s must be an array.')
                         ->end()
                     ->end()
                 ->end()
