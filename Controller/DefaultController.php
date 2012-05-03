@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/mopa/remote/update/{token}", name="mopa_remote_update_action")
+     * @Route("/mopa/remote/updateapi/", name="mopa_remote_update_api")
      * @Template()
      */
     public function updateAction($token)

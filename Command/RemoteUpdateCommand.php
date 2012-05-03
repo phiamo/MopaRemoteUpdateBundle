@@ -1,5 +1,4 @@
 <?php
-// src/Acme/DemoBundle/Command/GreetCommand.php
 namespace Mopa\Bundle\RemoteUpdateBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -25,6 +24,10 @@ class RemoteUpdateCommand extends ContainerAwareCommand
     {
         $name = $input->getArgument('remote');
         $config = $this->getContainer()->getParameter('mopa_remote_update.remotes.' . $name);
+        $api = $this->getContainer()->get('mopa_remote_update.api');
+        $api->setTarget($name)
+            ->;
+
         $output->writeln($name);
         var_dump($config);
 
