@@ -1,0 +1,7 @@
+parameters:
+    mopa_remote_update_service.class: Mopa\Bundle\RemoteUpdateBundle\Model\RemoteUpdateService
+    
+services:
+    mopa_remote_update_service:
+        class:     %mopa_remote_update_service.class%
+        arguments: [@service_container]
