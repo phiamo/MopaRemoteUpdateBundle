@@ -1,7 +1,17 @@
 parameters:
     mopa_remote_update_service.class: Mopa\Bundle\RemoteUpdateBundle\Model\RemoteUpdateService
+    mopa_wsse_auth_listener.class: Mopa\Bundle\RemoteUpdateBundle\Security\Listener\WsseAuthenticationBuzzListener
     
 services:
     mopa_remote_update_service:
         class:     %mopa_remote_update_service.class%
-        arguments: [@service_container]
+        arguments: [@service_container, @mopa_wsse_buzz]
+        
+    mopa_wsse_auth_listener:
+        class:     %mopa_wsse_auth_listener.class%
+        
+        
+    mopa_wsse_buzz:
+        parent: buzz
+        calls:
+            - [ addListener, [ @mopa_wsse_auth_listener ] ]

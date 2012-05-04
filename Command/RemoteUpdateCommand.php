@@ -15,21 +15,18 @@ class RemoteUpdateCommand extends ContainerAwareCommand
         ->setName('mopa:remote:update')
         ->setDescription('update remote installation')
         ->addArgument('remote', InputArgument::REQUIRED, 'Which remote to use?')
-        ->addOption('environments', null, InputOption::VALUE_OPTIONAL, 'Which environment to update? Default: dev')
-        ->addOption('remote', 'r', InputOption::VALUE_NONE, 'If not set will do this on this local installation')
+        //->addOption('environments', null, InputOption::VALUE_IS_ARRAY, 'Which environment to update? Default: dev')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('remote');
-        $config = $this->getContainer()->getParameter('mopa_remote_update.remotes.' . $name);
-        $api = $this->getContainer()->get('mopa_remote_update.api');
+        $api = $this->getContainer()->get('mopa_remote_update_service');
         $api->setTarget($name)
-            ->;
+            ->update();
 
         $output->writeln($name);
-        var_dump($config);
 
     }
 }
