@@ -10,15 +10,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/mopa/remote/updateapi/", name="mopa_remote_update_api")
-     * @Template()
+     * @Route("/mopa/remote/update/api/", name="mopa_remote_update_api")
      */
     public function updateAction(Request $request)
     {
-    	echo "GOT INSIDE";
-    	//var_dump($request);
-    	//var_dump($this->get('security.context')->getToken());
-    	exit;
+		$this->getDoctrine()
+			 ->getEntityManager("mopa_remote_update")
+			 ->getRepository("MopaRemoteUpdateBundle:UpdateJob")
+			 ->findAll();
         return array();
     }
 }

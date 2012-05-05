@@ -4,3 +4,9 @@ doctrine:
             mopa_remote_update:
                 driver: pdo_sqlite
                 path: %kernel.root_dir%/Resources/remote_update.sqlite
+    orm:
+        entity_managers:
+            mopa_remote_update:
+                connection: mopa_remote_update
+                mappings:
+                    MopaRemoteUpdateBundle: ~
