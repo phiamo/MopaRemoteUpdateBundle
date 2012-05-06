@@ -36,12 +36,13 @@ class UpdateJobRepository extends EntityRepository
 	public function hasPendingJob(){
 		return $this->hasRunningJob() || $this->getPendingJob() ? true : false;
 	}
-	public function getLast(){
+	public function getLast($count){
 		$result = $this->createQueryBuilder('j')
 			->select("j")
 			->where("j.startAt IS NOT NULL AND j.finishedAt IS NOT NULL")
 			->getQuery()
-			->getOneOrNullResult();
+			->setMaxResults($count)
+			->getResult();
 		return $result;
 	}
 }

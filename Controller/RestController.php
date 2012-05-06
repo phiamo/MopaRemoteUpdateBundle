@@ -33,9 +33,9 @@ class RestController extends Controller
      * @Secure(roles="ROLE_REMOTE_UPDATER")
      * @View
      */
-    public function getUpdateAction(Request $request, $remote)
+    public function getUpdateAction(Request $request, $remote, $count = 1)
     {
-    	$response = $this->container->get('mopa_local_update_service')->check($remote);
+    	$response = $this->container->get('mopa_local_update_service')->check($remote, $count);
     	if(isset($response['status']) && $response['status'] == "error"){
     		return FOSView::create($response, 500);
     	}

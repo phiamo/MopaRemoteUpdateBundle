@@ -22,8 +22,8 @@ class LocalUpdateService extends AbstractUpdateService{
 		chdir($rootDir);
 	}
 
-	public function check($remote){
-		return $this->em->getRepository("MopaRemoteUpdateBundle:UpdateJob")->getLast();
+	public function check($remote, $count){
+		return $this->em->getRepository("MopaRemoteUpdateBundle:UpdateJob")->getLast($count);
 	}
 	public function update($remote, $username){
 		$this->setTarget($remote);
