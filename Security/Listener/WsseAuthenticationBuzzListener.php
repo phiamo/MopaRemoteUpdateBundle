@@ -14,13 +14,14 @@ class WsseAuthenticationBuzzListener implements ListenerInterface{
 	{
 		$this->username = $username;
 		$this->password = $password;
+
 		return $this;
 	}
 
 	public function preSend(Request $request)
 	{
 		if($this->username === null){
-			throw new \RuntimeException("You have to setCredential before using WsseListener with Buzz");
+			throw new \RuntimeException("You have to setCredentials before using WsseListener with Buzz");
 		}
 		$username = $this->username;
 		$created  = date('c');

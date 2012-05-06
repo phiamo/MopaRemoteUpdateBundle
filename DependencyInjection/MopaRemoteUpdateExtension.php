@@ -22,11 +22,12 @@ class MopaRemoteUpdateExtension extends Extension {
 		$loader = new Loader\YamlFileLoader($container,
 		    new FileLocator(__DIR__ . '/../Resources/config'));
 		$loader->load('services.yml');
-
+		$container
+			->setParameter('mopa_remote_update.composer', $config['composer']);
 		// register filters
-		foreach ($config['remotes'] as $name => $config) {
+		foreach ($config['remotes'] as $name => $conf) {
 			$container
-				->setParameter('mopa_remote_update.remotes.' . $name, $config);
+				->setParameter('mopa_remote_update.remotes.' . $name, $conf);
 		}
 
 	}

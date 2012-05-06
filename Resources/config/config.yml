@@ -1,0 +1,14 @@
+fos_rest:
+    view:
+        formats:
+            json: true
+        view_response_listener: force
+    format_listener:
+        default_priorities: ['json', html, '*/*']
+        fallback_format: json
+    routing_loader:
+        default_format: json
+
+sensio_framework_extra:
+    view:    { annotations: false }
+    router:  { annotations: true }

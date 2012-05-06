@@ -12,4 +12,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class UpdateJobRepository extends EntityRepository
 {
+	public function getRunningJob(){
+		$result = $this->createQueryBuilder("j")
+			->select("j")
+			->where("j.startAt < ?1")
+			->andWhere("j.finishedAt IS NULL")
+			->setParameter(1, new \DateTime(), \Doctrine\DBAL\Types\Type::DATETIME)
+			->getQuery()
+			->getOneOrNullResult();
+		return $result;
+	}
+	public function hasRunningJob(){
+		return $this->getRunningJob() ? true : false;
+	}
+	public function getPendingJob(){
+		$result = $this->createQueryBuilder('j')
+			->select("j")
+			->where("j.startAt IS NULL AND j.finishedAt IS NULL")
+			->getQuery()
+			->getOneOrNullResult();
+		return $result;
+	}
+	public function hasPendingJob(){
+		return $this->hasRunningJob() || $this->getPendingJob() ? true : false;
+	}
 }

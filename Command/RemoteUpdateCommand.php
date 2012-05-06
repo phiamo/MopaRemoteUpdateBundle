@@ -12,7 +12,7 @@ class RemoteUpdateCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-        ->setName('mopa:remote:update')
+        ->setName('mopa:update:remote')
         ->setDescription('update remote installation')
         ->addArgument('remote', InputArgument::REQUIRED, 'Which remote to use?')
         //->addOption('environments', null, InputOption::VALUE_IS_ARRAY, 'Which environment to update? Default: dev')
@@ -21,12 +21,17 @@ class RemoteUpdateCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $name = $input->getArgument('remote');
+        $remote = $input->getArgument('remote');
         $api = $this->getContainer()->get('mopa_remote_update_service');
-        $api->setTarget($name)
-            ->update();
-
-        $output->writeln($name);
+        $output->writeln("Starting remote update on $remote ... ");
+        $response = $api->update($remote);
+        if( $output->getVerbosity() > 1){
+        	$output->writeln("Got from Remote $remote:");
+        	foreach($response->message as $line){
+        		$output->writeln($line);
+        	}
+        }
+        $output->writeln("done.");
 
     }
 }

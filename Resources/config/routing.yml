@@ -1,0 +1,6 @@
+
+MopaRemoteUpdateBundleRestApi:
+    type:     rest
+    resource: Mopa\Bundle\RemoteUpdateBundle\Controller\RestController
+    name_prefix: mopa_update_api_
+    prefix: mopa/update/api

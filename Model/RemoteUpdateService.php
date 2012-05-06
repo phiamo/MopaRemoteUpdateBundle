@@ -2,30 +2,38 @@
 namespace Mopa\Bundle\RemoteUpdateBundle\Model;
 
 
-class RemoteUpdateService{
+use Buzz\Browser;
 
-	protected $container;
+use Symfony\Component\Routing\RouterInterface;
 
-	protected $target;
-	protected $config;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-    public function __construct($container, $buzz){
-        $this->container = $container;
+class RemoteUpdateService extends AbstractUpdateService{
+
+	protected $buzz;
+	protected $router;
+
+    public function __construct(ContainerInterface $container, Browser $buzz, RouterInterface $router){
+    	parent::__construct($container);
         $this->buzz = $buzz;
+        $this->router = $router;
     }
-
-    public function setTarget($target){
-    	$this->target = $target;
-        $this->config = $this->container->getParameter('mopa_remote_update.remotes.' . $target);
-    	return $this;
-    }
-    protected function getTargetApiEntryPoint(){
-		return $this->config['url'];
-    }
-    public function update(){
+	protected function getTargetApiEntryPoint($route, array $parameters){
+		return $this->config['url'] . $this->router->generate($route, $parameters);
+	}
+    public function update($remote){
+    	$this->setTarget($remote);
     	$this->container->get('mopa_wsse_auth_listener')
     		->setCredentials($this->config['username'], $this->config['password']);
-    	$response = $this->buzz->get($this->getTargetApiEntryPoint());
-    	var_dump($response);
+    	return $this->doUpdate();
     }
+	protected function doUpdate(){
+		$path = $this->getTargetApiEntryPoint("mopa_update_api_post_update", array("remote" => $this->target));
+    	$response = $this->buzz->post($path);
+		$json = json_decode($response->getContent());
+		if($code = json_last_error()){
+			throw new \RuntimeException("Couldnt decode Json: Code $code".$response->getContent());
+		}
+    	return $json;
+	}
 }
