@@ -21,6 +21,15 @@ class RemoteUpdateService extends AbstractUpdateService{
 	protected function getTargetApiEntryPoint($route, array $parameters){
 		return $this->config['url'] . $this->router->generate($route, $parameters);
 	}
+	public function check($remote){
+    	$this->setTarget($remote);
+    	$this->container->get('mopa_wsse_auth_listener')
+    		->setCredentials($this->config['username'], $this->config['password']);
+		$path = $this->getTargetApiEntryPoint("mopa_update_api_get_update", array("remote" => $this->target));
+		$response = $this->buzz->get($path);
+		var_dump($response);
+		$json = json_decode($response->getContent());
+	}
     public function update($remote){
     	$this->setTarget($remote);
     	$this->container->get('mopa_wsse_auth_listener')
@@ -32,7 +41,7 @@ class RemoteUpdateService extends AbstractUpdateService{
     	$response = $this->buzz->post($path);
 		$json = json_decode($response->getContent());
 		if($code = json_last_error()){
-			throw new \RuntimeException("Couldnt decode Json: Code $code".$response->getContent());
+			throw new \RuntimeException("Couldnt decode Json for $path: Code $code\n Response:".$response->getContent());
 		}
     	return $json;
 	}

@@ -29,4 +29,16 @@ class RestController extends Controller
     	}
     	return $response;
     }
+    /**
+     * @Secure(roles="ROLE_REMOTE_UPDATER")
+     * @View
+     */
+    public function getUpdateAction(Request $request, $remote)
+    {
+    	$response = $this->container->get('mopa_local_update_service')->check($remote);
+    	if(isset($response['status']) && $response['status'] == "error"){
+    		return FOSView::create($response, 500);
+    	}
+    	return $response;
+    }
 }

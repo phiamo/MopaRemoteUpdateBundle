@@ -22,7 +22,10 @@ class LocalUpdateService extends AbstractUpdateService{
 		chdir($rootDir);
 	}
 
-	public function update($remote, $username, $local = true){
+	public function check($remote){
+		return $this->em->getRepository("MopaRemoteUpdateBundle:UpdateJob")->getLast();
+	}
+	public function update($remote, $username){
 		$this->setTarget($remote);
 		if($this->em->getRepository("MopaRemoteUpdateBundle:UpdateJob")->hasRunningJob()){
 			return array("status"=>"running", "message"=>array("have a composer update currently running"));
