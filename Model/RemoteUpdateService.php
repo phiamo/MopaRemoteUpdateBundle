@@ -23,8 +23,6 @@ class RemoteUpdateService extends AbstractUpdateService{
 	}
 	public function check($remote, $count){
     	$this->setTarget($remote);
-    	$this->container->get('mopa_wsse_auth_listener')
-    		->setCredentials($this->config['username'], $this->config['password']);
 		$path = $this->getTargetApiEntryPoint("mopa_update_api_get_update", array("remote" => $this->target, "count" => $count));
 		$response = $this->buzz->get($path);
 		$json = json_decode($response->getContent());
@@ -35,8 +33,6 @@ class RemoteUpdateService extends AbstractUpdateService{
 	}
     public function update($remote){
     	$this->setTarget($remote);
-    	$this->container->get('mopa_wsse_auth_listener')
-    		->setCredentials($this->config['username'], $this->config['password']);
     	return $this->doUpdate();
     }
 	protected function doUpdate(){
