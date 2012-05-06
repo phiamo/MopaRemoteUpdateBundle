@@ -66,6 +66,9 @@ class LocalUpdateService extends AbstractUpdateService{
         $this->em->flush();
         if($this->config['preUpdate']){
         	if(!$this->runCommand($this->config['preUpdate'], $job)){
+		    	$job->setFinishedAt(new \DateTime());
+		        $this->em->persist($job);
+		        $this->em->flush();
         		return ;
         	}
         }

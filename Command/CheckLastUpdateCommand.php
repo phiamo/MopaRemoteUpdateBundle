@@ -30,7 +30,12 @@ class CheckLastUpdateCommand extends ContainerAwareCommand
 	        foreach($jobs as $job){
 	        	$output->writeln("Last Update was created at: ".$job->created_at);
 	        	$output->writeln("Last Update was started at: ".$job->start_at);
-	        	$output->writeln("Last Update was finished at: ".$job->finished_at);
+	        	if(isset($job->finished_at)){
+	        		$output->writeln("Last Update was finished at: ".$job->finished_at);
+	        	}
+	        	else{
+	        		$output->writeln("Last Update isnt finished yet ");
+	        	}
 	        	$output->writeln("Status: ".$job->success);
 
 	        	if( $output->getVerbosity() > 1){
