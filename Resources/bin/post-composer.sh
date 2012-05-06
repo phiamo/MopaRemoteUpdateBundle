@@ -116,5 +116,5 @@ fi
 if [ $WITHCHMOD = 1 ]; then
     echo "RUNNING CHMOD AS $APACHE_RUN_USER:$APACHE_RUN_GROUP on $DIRS"
     sudo chown --silent $APACHE_RUN_USER.$APACHE_RUN_GROUP -R $DIRS
-    sudo chmod --silent 765 -R $DIRS
+    sudo chmod --silent $APACHE_RUN_MASK -R $DIRS
 fi
