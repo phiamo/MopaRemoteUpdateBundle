@@ -32,7 +32,7 @@ public function registerBundles()
     return array(
         // ...
         new Mopa\Bundle\RemoteUpdateBundle\MopaRemoteUpdateBundle(),
-        new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
+        new Mopa\Bundle\WSSEAuthenticationBundle\MopaWSSEAuthenticationBundle(),
         new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
     	new FOS\RestBundle\FOSRestBundle(),
     	new JMS\SerializerBundle\JMSSerializerBundle($this)
