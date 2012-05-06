@@ -169,5 +169,6 @@ Optionally add this to your vcs ignore file (e.g. .gitignore):
 # ignore MopaRemoteUpdateBundle bin files
 bin/post-composer.sh
 bin/envvars.default
+app/Resources/remote_update.sqlite
 ```
 
