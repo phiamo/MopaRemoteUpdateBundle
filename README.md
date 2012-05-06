@@ -72,15 +72,16 @@ security:
         in_memory:
             memory:
                 users:
-                    '%yourparameteruser%':  { password: '%yourparameterpassword%', roles: 'ROLE_REMOTE_UPDATER' }
+                    '%mopa_remote_update_user%':  { password: '%mopa_remote_update_password%', roles: 'ROLE_REMOTE_UPDATER' }
 ```
 
 And in your parameters.yml:
 
 ``` yaml
 parameters:
-    yourparameteruser: someusername
-    yourparameterpassword: somesecretpassword
+    mopa_remote_update_url: http://yourhost
+    mopa_remote_update_user: changethis
+    mopa_remote_update_password: changethat
 ```
 
 
@@ -111,9 +112,9 @@ Setup your remotes in your config.yml:
 mopa_remote_update:
     remotes:
         my_remote: # the alias to use on console, you can define as many remotes as you like
-            url: http://www.yoursite.net/ # the url to your side might also be https
-            username: test # your username
-            password: test # your password
+            url: %mopa_remote_update_url% # the url to your side might also be https
+            username: %mopa_remote_update_user% # your username
+            password: %mopa_remote_update_password% # your password
             preUpdate: git pull # optional: a command to run before composer updates the vendors, e.g. update your main application
             postUpdate: bin/post-composer.sh -w # optional: a command to run after composer updates
             updater: live # either live or cron see further down howto deal with cron
