@@ -9,6 +9,9 @@ fos_rest:
     routing_loader:
         default_format: json
 
+twig:
+    exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
+    
 sensio_framework_extra:
     view:    { annotations: false }
     router:  { annotations: true }
