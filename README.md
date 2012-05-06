@@ -144,6 +144,11 @@ If you can not use the live updater, e.g. because your webserver does not have p
 ``` 
 */5   *   *   *  *    /path/to/your/app/console mopa:update:check # checks every 5 minutes if there is a new update job in queue
 ```
+To log the output e.g. for debugging you could use:
+
+```
+*/5   *   *   *  *    /path/to/your/app/console mopa:update:check -v >> /path/to/your/app/logs/mopa_remote_update.log
+```
 
 ### Step 7: commit your changes to your favorite vcs and setup your remote.
 
