@@ -28,7 +28,7 @@ OPTIONS:
 EOF
 }
 
-APP=$(readlink -f "$scriptPath/../../app/console") # assuming we are in vendors/bin/
+APP=$(readlink -f "$scriptPath/../app/console") # assuming we are in bin/
 APACHE_RUN_USER="${APACHE_RUN_USER-www-data}"
 APACHE_RUN_GROUP="${APACHE_RUN_GROUP-www-data}"
 DIRS="${DIRS-app/cache app/logs web/media/}"

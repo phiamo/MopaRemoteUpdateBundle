@@ -115,7 +115,7 @@ mopa_remote_update:
             username: test # your username
             password: test # your password
             preUpdate: git pull # optional: a command to run before composer updates the vendors, e.g. update your main application
-            postUpdate: vendors/bin/post-composer.sh -w # optional: a command to run after composer updates
+            postUpdate: bin/post-composer.sh -w # optional: a command to run after composer updates
             updater: live # either live or cron see further down howto deal with cron
     composer: /usr/sbin/composer.phar # optional: sets the path to the composer binary if it cant be found
 ```
@@ -123,12 +123,12 @@ mopa_remote_update:
 there is a usefule postUpdate packaged which has several features: 
 
 ```
-vendors/bin/post-composer.sh -h
+bin/post-composer.sh -h
 ```
 
 To get a description
 
-The vendors/bin/envvars.default has to be copied to vendors/bin/envvars and editied, to make app/cache and app/logs wirtable for webserver.
+The bin/envvars.default has to be copied to bin/envvars and editied, to make app/cache and app/logs wirtable for webserver.
 
 ### Step 5: update/create the schema: 
 
