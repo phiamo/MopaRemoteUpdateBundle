@@ -26,5 +26,6 @@
             "Mopa\\Bundle\\RemoteUpdateBundle": ""
         }
     },
-    "target-dir": "Mopa/Bundle/RemoteUpdateBundle"
+    "target-dir": "Mopa/Bundle/RemoteUpdateBundle",
+    "bin": ["Resources/bin/post-composer.sh", "Resources/bin/envvars.default"]
 }

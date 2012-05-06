@@ -6,11 +6,13 @@ This Bundle provides commands to update remote installations directly from your 
 ``` bash
 app/console mopa:update:remote yourremote
 ```
+## Installation
+
+Installation is quite easy
 
 
-Installation is straight forward:
+### Step 1: Installation using your composer.json:
 
-add it to your composer.json:
 ``` json
 {
     "require": {
@@ -19,7 +21,9 @@ add it to your composer.json:
 }
 ```
 
-Include the following bundles in your AppKernel.php:
+### Step 2: Include the following bundles in your AppKernel.php:
+
+Make sure you do not include bundles twice if you already use them.
 
 ``` php
 // application/ApplicationKernel
@@ -37,28 +41,17 @@ public function registerBundles()
 }
 ```
 
-Make sure you do not include bundles twice if you already use them.
-
-Import the necessary configuration in your config.yml: 
+### Step 2: Add the necessary routing information to your routing.yml
 
 ``` yaml
-imports:
-    - { resource: @MopaRemoteUpdateBundle/Resources/config/config.yml }
-
+mopa_remote_update_bundle:
+    type:     rest
+    resource: "@MopaRemoteUpdateBundle/Resources/config/routing.yml"
 ```
 
-If you do not have a dbal connection in your project also include the sqlite config:
+### Step 3: Add the necessary firewall configurations to your security.yml
 
-``` yaml
-imports:
-    - { resource: @MopaRemoteUpdateBundle/Resources/config/config.yml }
-    - { resource: @MopaRemoteUpdateBundle/Resources/config/database.yml }
-
-```
-If you do not want to have this feature in your productive environment, just include all this in your config_dev.yml just make sure dependencies are set correct, same for AppKernel and Bundles.
-
-
-Add the Firewall to your security.yml to protect the api from public:
+To protect the api from public we need a firewall and a user provider:
 
 ``` yaml
 security:
@@ -79,39 +72,88 @@ security:
         in_memory:
             memory:
                 users:
-                    yourusername:  { password: yoursecretpassword, roles: 'ROLE_REMOTE_UPDATER' }
+                    '%yourparameteruser%':  { password: '%yourparameterpassword%', roles: 'ROLE_REMOTE_UPDATER' }
+```
+
+And in your parameters.yml:
+
+``` yaml
+parameters:
+    yourparameteruser: someusername
+    yourparameterpassword: somesecretpassword
 ```
 
 
+### Step 4: Add the necessary configuration to your config.yml
 
-Now setup your remotes in your config.yml:
+Import the necessary configuration in your config.yml: 
+
+``` yaml
+imports:
+    - { resource: @MopaRemoteUpdateBundle/Resources/config/config.yml }
+
+```
+
+If you do not have a dbal connection in your project also include the sqlite config:
+
+``` yaml
+imports:
+    - { resource: @MopaRemoteUpdateBundle/Resources/config/config.yml }
+    - { resource: @MopaRemoteUpdateBundle/Resources/config/database.yml }
+
+```
+If you do not want to have this feature in your productive environment, just include all this in your config_dev.yml just make sure dependencies are set correct, same for AppKernel and Bundles.
+
+
+Setup your remotes in your config.yml:
 
 ``` yaml
 mopa_remote_update:
     remotes:
-        vserverli2: # the alias to use on console
+        my_remote: # the alias to use on console, you can define as many remotes as you like
             url: http://www.yoursite.net/ # the url to your side might also be https
             username: test # your username
             password: test # your password
             preUpdate: git pull # optional: a command to run before composer updates the vendors, e.g. update your main application
-            postUpdate: app/console schema:update --force # optional: a command to run after composer updates
+            postUpdate: vendors/bin/post-composer.sh -w # optional: a command to run after composer updates
             updater: live # either live or cron see further down howto deal with cron
-        # you can define as many remotes as you like
     composer: /usr/sbin/composer.phar # optional: sets the path to the composer binary if it cant be found
 ```
 
+there is a usefule postUpdate packaged which has several features: 
 
-Probably you should now update the schema: 
+```
+vendors/bin/post-composer.sh -h
+```
+
+To get a description
+
+The vendors/bin/envvars.default has to be copied to vendors/bin/envvars and editied, to make app/cache and app/logs wirtable for webserver.
+
+### Step 5: update/create the schema: 
 
 ```bash
 app/console doctrine:schema:update  --force
 ```
 
+### Step 6(Optional): configure cron updater:
+
 If you can not use the live updater, e.g. because your webserver does not have permissions to update the vendors, you can create a cronjob on the remote machine to execute the updates:
 
 
 ``` 
-*/5   *   *   *  *    /path/to/your/app/console app/console mopa:update:check     #Befehl wird alle 5 Minuten aufgerufen (die Schrittweite wird durch */Schrittweite angegeben).
+*/5   *   *   *  *    /path/to/your/app/console mopa:update:check # checks every 5 minutes if there is a new update job in queue
+```
+
+### Step 7: commit your changes to your favorite vcs and setup your remote.
+
+Now its time to push the same to your server and make sure everything is working as expected.
+You should also check the postUpdate command an composer are found.
+
+To test the update you can use 
+
+```bash
+app/console mopa:update:local my_remote
 ```
 
 
