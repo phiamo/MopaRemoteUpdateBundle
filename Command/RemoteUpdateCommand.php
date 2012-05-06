@@ -25,13 +25,18 @@ class RemoteUpdateCommand extends ContainerAwareCommand
         $api = $this->getContainer()->get('mopa_remote_update_service');
         $output->writeln("Starting remote update on $remote ... ");
         $response = $api->update($remote);
-        if( $output->getVerbosity() > 1){
-        	$output->writeln("Got from Remote $remote:");
-        	foreach($response->message as $line){
-        		$output->writeln($line);
-        	}
+        if(isset($response->error)){
+        		$output->writeln("Had an error: ". $response->error->message);
+
+        }else{
+	        if( $output->getVerbosity() > 1){
+	        	$output->writeln("Got from Remote $remote:");
+	        	foreach($response->message as $line){
+	        		$output->writeln($line);
+	        	}
+	        }
+	        $output->writeln("done.");
         }
-        $output->writeln("done.");
 
     }
 }
