@@ -40,6 +40,7 @@ class UpdateJobRepository extends EntityRepository
 		$result = $this->createQueryBuilder('j')
 			->select("j")
 			->where("j.startAt IS NOT NULL AND j.finishedAt IS NOT NULL")
+                        ->orderBy('j.finishedAt', 'DESC')
 			->getQuery()
 			->setMaxResults($count)
 			->getResult();
