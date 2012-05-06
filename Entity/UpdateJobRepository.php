@@ -39,8 +39,7 @@ class UpdateJobRepository extends EntityRepository
 	public function getLast($count){
 		$result = $this->createQueryBuilder('j')
 			->select("j")
-			->where("j.startAt IS NOT NULL AND j.finishedAt IS NOT NULL")
-                        ->orderBy('j.finishedAt', 'DESC')
+			->orderBy('j.createdAt', 'DESC')
 			->getQuery()
 			->setMaxResults($count)
 			->getResult();

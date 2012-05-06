@@ -28,6 +28,9 @@ class RemoteUpdateService extends AbstractUpdateService{
 		$path = $this->getTargetApiEntryPoint("mopa_update_api_get_update", array("remote" => $this->target, "count" => $count));
 		$response = $this->buzz->get($path);
 		$json = json_decode($response->getContent());
+		if($code = json_last_error()){
+			throw new \RuntimeException("Couldnt decode Json for $path: Code $code\n Response:".$response->getContent());
+		}
 		return $json;
 	}
     public function update($remote){
