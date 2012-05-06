@@ -156,4 +156,13 @@ To test the update you can use
 app/console mopa:update:local my_remote
 ```
 
+### Step 8(Optional): ignore MopaRemoteUpdateBundle bin files
+
+Optionally add this to your vcs ignore file (e.g. .gitignore):
+
+```
+# ignore MopaRemoteUpdateBundle bin files
+bin/post-composer.sh
+bin/envvars.default
+```
 
