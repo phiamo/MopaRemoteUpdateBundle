@@ -41,11 +41,6 @@ WITHDBACL=0
 WITHDBFIXTURES=0
 WITHCHMOD=0
 
-if [ -e "$scriptPath/envvars" ]; then
-    . $scriptPath/envvars
-    WITHCHMOD=1
-fi
-
 while getopts "hsdruafwc" OPTION ; do
     case $OPTION in
         s)
@@ -78,6 +73,11 @@ while getopts "hsdruafwc" OPTION ; do
             ;;
     esac
 done
+
+if [ -e "$scriptPath/envvars" ]; then
+    . $scriptPath/envvars
+    WITHCHMOD=1
+fi
 
 if [ $WITHDB = 1 ]; then
     # create db
