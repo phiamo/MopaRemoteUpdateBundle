@@ -35,6 +35,7 @@ DIRS="${DIRS-app/cache app/logs web/media/}"
 WITHASSETS=1
 WITHDB=1
 WITHDBDROP=0
+WITHSCHEMADROP=0
 WITHWEBSERVER=0
 WITHDBACL=0
 WITHDBFIXTURES=0
@@ -45,7 +46,7 @@ if [ -e "$scriptPath/envvars" ]; then
     WITHCHMOD=1
 fi
 
-while getopts "hsdrafwc" OPTION ; do
+while getopts "hsdruafwc" OPTION ; do
     case $OPTION in
         s)
             WITHASSETS=0
@@ -55,6 +56,9 @@ while getopts "hsdrafwc" OPTION ; do
             ;;
         r)
             WITHDBDROP=1
+            ;;
+        u)
+            WITHSCHEMADROP=1
             ;;
         a)
             WITHDBACL=1
@@ -81,7 +85,12 @@ if [ $WITHDB = 1 ]; then
         $APP doctrine:database:drop --force
         $APP doctrine:database:create
     fi
-    $APP doctrine:schema:update --force
+    if [ $WITHSCHEMADROP = 1 ]; then
+        $APP doctrine:schema:drop --force
+        $APP doctrine:schema:create
+    else
+        $APP doctrine:schema:update --force
+    fi
     if [ $WITHDBACL = 1 ]; then
         $APP init:acl
     fi
