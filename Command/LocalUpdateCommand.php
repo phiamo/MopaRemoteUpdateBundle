@@ -22,16 +22,13 @@ class LocalUpdateCommand extends ContainerAwareCommand
         $remote = $input->getArgument('remote');
 
         $output->writeln("Starting local update with conf for $remote ... ");
-        $response = $this->getContainer()
+        $job = $this->getContainer()
         				->get('mopa_local_update_service')
         				->update($remote, "local");
-        $output->writeln("Status: ".$response['status']);
-
+        $output->writeln("Status: " . $job->getStatusMessage());
         if( $output->getVerbosity() > 1){
         	$output->writeln("Got from Remote $remote:");
-        	foreach($response['message'] as $line){
-        		$output->writeln($line);
-        	}
+        	$output->writeln($job->getMessage());
         }
         $output->writeln("done.");
 

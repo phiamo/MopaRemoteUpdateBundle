@@ -22,22 +22,18 @@ class CheckAndUpdateCommand extends ContainerAwareCommand
         $updateService = $this->getContainer()->get('mopa_local_update_service');
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
         if($job = $em->getRepository("MopaRemoteUpdateBundle:UpdateJob")->getPendingJob()){
-
 			$remote = $job->getRemote();
 	        $output->writeln("Starting local update with conf for $remote ... ");
-        	$response = $updateService->doUpdate($job);
-        	$output->writeln("Status: ".$response['status']);
-
+        	$updateService->doUpdate($job);
+        	$output->writeln("Status: " . ($job->getStatusMessage()));
 	        if( $output->getVerbosity() > 1){
 	        	$output->writeln("Got from Remote $remote:");
 	        	$output->writeln($job->getMessage());
 	        }
-	        $output->writeln("done.");
         }
         else{
 	        if( $output->getVerbosity() > 1){
 	        	$output->writeln("Nothing to do.");
-
 	        }
         }
     }

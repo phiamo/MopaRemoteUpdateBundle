@@ -3,6 +3,7 @@
 namespace Mopa\Bundle\RemoteUpdateBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\SerializerBundle\Annotation as Serializer;
 
 /**
  * Mopa\Bundle\RemoteUpdateBundle\Entity\UpdateJob
@@ -12,9 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class UpdateJob
 {
+	const STATUS_PENDING = 0;
+	const STATUS_RUNNING = 1;
+	const STATUS_SUCCESS = 2;
+	const STATUS_FAILED = 3;
+
     /**
      * @var integer $id
-     *
+     * @Serializer\Type("integer")
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,6 +30,7 @@ class UpdateJob
     /**
      * @var string $username
      *
+     * @Serializer\Type("string")
      * @ORM\Column(name="username", type="string", length=255)
      */
     private $username;
@@ -31,6 +38,7 @@ class UpdateJob
     /**
      * @var datetime $createdAt
      *
+     * @Serializer\Type("DateTime")
      * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
@@ -38,6 +46,7 @@ class UpdateJob
     /**
      * @var datetime $startAt
      *
+     * @Serializer\Type("DateTime")
      * @ORM\Column(name="startAt", type="datetime", nullable=true)
      */
     private $startAt = null;
@@ -45,6 +54,7 @@ class UpdateJob
     /**
      * @var datetime $finishedAt
      *
+     * @Serializer\Type("DateTime")
      * @ORM\Column(name="finishedAt", type="datetime", nullable=true)
      */
     private $finishedAt = null;
@@ -52,20 +62,22 @@ class UpdateJob
     /**
      * @var string $remote
      *
+     * @Serializer\Type("string")
      * @ORM\Column(name="remote", type="string", length=255)
      */
     private $remote;
 
     /**
-     * @var boolean $success
+     * @var boolean $status
      *
-     * @ORM\Column(name="success", type="boolean", nullable=true)
+     * @Serializer\Type("integer")
+     * @ORM\Column(name="status", type="integer")
      */
-    private $success = null;
+    private $status = 0;
 
     /**
      * @var text $message
-     *
+     * @Serializer\Type("string")
      * @ORM\Column(name="message", type="text")
      */
     private $message = "";
@@ -169,30 +181,6 @@ class UpdateJob
         return $this->remote;
     }
 
-
-
-    /**
-     * Set success
-     *
-     * @param boolean $success
-     * @return UpdateJob
-     */
-    public function setSuccess($success)
-    {
-        $this->success = $success;
-        return $this;
-    }
-
-    /**
-     * Get success
-     *
-     * @return boolean
-     */
-    public function getSuccess()
-    {
-        return $this->success;
-    }
-
     /**
      * Set message
      *
@@ -247,5 +235,40 @@ class UpdateJob
     public function getUsername()
     {
         return $this->username;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return UpdateJob
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function getStatusMessage(){
+    	switch($this->status){
+    		case self::STATUS_PENDING:
+    			return "<comment>pending</comment>";
+    		case self::STATUS_RUNNING:
+    			return "<comment>running</comment>";
+    		case self::STATUS_PENDING:
+    			return "<info>success</info>";
+    		case self::STATUS_FAILED:
+    			return "<error>failed</error>";
+    	}
     }
 }

@@ -1,6 +1,10 @@
 <?php
 namespace Mopa\Bundle\RemoteUpdateBundle\Command;
 
+use Mopa\Bundle\RemoteUpdateBundle\Model\Exceptions\HavingJobPendingException;
+
+use Mopa\Bundle\RemoteUpdateBundle\Entity\UpdateJob;
+
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,27 +19,25 @@ class RemoteUpdateCommand extends ContainerAwareCommand
         ->setName('mopa:update:remote')
         ->setDescription('update remote installation')
         ->addArgument('remote', InputArgument::REQUIRED, 'Which remote to use?')
-        //->addOption('environments', null, InputOption::VALUE_IS_ARRAY, 'Which environment to update? Default: dev')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $remote = $input->getArgument('remote');
-        $api = $this->getContainer()->get('mopa_remote_update_service');
         $output->writeln("Starting remote update on $remote ... ");
-        $response = $api->update($remote);
-        if(isset($response->error)){
-        		$output->writeln("Had an error: ". $response->error->message);
-
-        }else{
-	        if( $output->getVerbosity() > 1){
-	        	$output->writeln("Got from Remote $remote:");
-	        	foreach($response->message as $line){
-	        		$output->writeln($line);
-	        	}
-	        }
-	        $output->writeln("done.");
+        try{
+        	$job = $this->getContainer()
+        				->get('mopa_remote_update_service')
+        				->update($remote);
+        	$output->writeln("Status: " . ($job->getStatusMessage()));
+        	if( $output->getVerbosity() > 1){
+        		$output->writeln("Got from Remote $remote:");
+        		$output->writeln($job->getMessage());
+        	}
+        }
+        catch(HavingJobPendingException $e){
+        	$output->writeln("<comment>" . $e->getMessage() . "</comment>");
         }
 
     }

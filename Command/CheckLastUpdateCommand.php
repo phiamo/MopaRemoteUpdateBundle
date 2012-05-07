@@ -23,28 +23,36 @@ class CheckLastUpdateCommand extends ContainerAwareCommand
     {
         $remote = $input->getArgument('remote');
         $count = $input->getArgument('count');
-        $output->writeln("Checking for last remote update for $remote ... ");
-        $updateService = $this->getContainer()->get('mopa_remote_update_service');
-        $jobs = $updateService->check($remote, $count);
-        if(count($jobs)){
+        $output->writeln("Checking for last" . ($count > 1 ? " ($count)" : "" ). " remote update" . ($count > 1 ? "s" : "" ). " for $remote ... ");
+        try{
+	        $updateService = $this->getContainer()->get('mopa_remote_update_service');
+	        $jobs = $updateService->check($remote, $count);
 	        foreach($jobs as $job){
-	        	$output->writeln("Last Update was created at: ".$job->created_at);
-	        	$output->writeln("Last Update was started at: ".$job->start_at);
-	        	if(isset($job->finished_at)){
-	        		$output->writeln("Last Update was finished at: ".$job->finished_at);
+	        	$output->writeln("Update was created at: ".$job->getCreatedAt()->format('Y-m-d H:i:s'));
+	        	if($job->getFinishedAt()){
+	        		$output->writeln("Update was started at: ".$job->getStartAt()->format('Y-m-d H:i:s'));
 	        	}
 	        	else{
-	        		$output->writeln("Last Update isnt finished yet ");
+	        		$output->writeln("Update isnt started yet ");
 	        	}
-	        	$output->writeln("Status: ".$job->success);
-
+	        	if($job->getFinishedAt()){
+	        		$output->writeln("Update was finished at: ".$job->getFinishedAt()->format('Y-m-d H:i:s'));
+	        	}
+	        	else{
+	        		$output->writeln("Update isnt finished yet ");
+	        	}
+	        	$output->writeln("Status: " . ($job->getStatusMessage()));
 	        	if( $output->getVerbosity() > 1){
-	        		$output->writeln("Message: ".$job->message);
+	        		$output->writeln("Message: " . $job->getMessage());
 	        	}
 	        }
+	        if(0 === count($jobs)){
+	        	$output->writeln("No Jobs found");
+	        }
         }
-        else{
-        	$output->writeln("No finished jobs found");
+        catch(RuntimeException $e){
+        	$output->writeln("Had an error: ". $e->getMessage());
         }
+
     }
 }

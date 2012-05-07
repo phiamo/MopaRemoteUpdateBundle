@@ -36,10 +36,10 @@ class UpdateJobRepository extends EntityRepository
 	public function hasPendingJob(){
 		return $this->hasRunningJob() || $this->getPendingJob() ? true : false;
 	}
-	public function getLast($count){
+	public function getLastJobs($count){
 		$result = $this->createQueryBuilder('j')
 			->select("j")
-			->orderBy('j.createdAt', 'DESC')
+			->orderBy('j.createdAt', 'ASC')
 			->getQuery()
 			->setMaxResults($count)
 			->getResult();
