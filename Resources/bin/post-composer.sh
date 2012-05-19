@@ -75,11 +75,13 @@ while getopts "hsdruafwc" OPTION ; do
 done
 
 if [ -e "$scriptPath/envvars" ]; then
+    echo "Including envvars"
     . $scriptPath/envvars
     WITHCHMOD=1
 fi
 
 if [ $WITHDB = 1 ]; then
+    echo "With db:"
     # create db
     if [ $WITHDBDROP = 1 ]; then
         $APP doctrine:database:drop --force
@@ -97,8 +99,6 @@ if [ $WITHDB = 1 ]; then
     if [ $WITHDBFIXTURES = 1 ]; then
         $APP doctrine:fixtures:load
     fi
-else
-    $APP doctrine:schema:update --force
 fi
 
 if [ $WITHASSETS = 1 ]; then
