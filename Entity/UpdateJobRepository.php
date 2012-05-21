@@ -39,7 +39,7 @@ class UpdateJobRepository extends EntityRepository
     public function getLastJobs($count) {
         $result = $this->createQueryBuilder('j')
             ->select("j")
-            ->orderBy('j.createdAt', 'ASC')
+            ->orderBy('j.createdAt', 'DESC')
             ->getQuery()
             ->setMaxResults($count)
             ->getResult();
