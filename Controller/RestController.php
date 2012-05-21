@@ -20,7 +20,7 @@ class RestController extends Controller
      */
     public function postUpdateAction(Request $request, $remote)
     {
-    	return $this->container->get('mopa_local_update_service')->update($remote, $this->container->get('security.context')->getToken()->getUser()->getUserName());
+        return $this->container->get('mopa_local_update_service')->update($remote, $this->container->get('security.context')->getToken()->getUser()->getUserName());
     }
     /**
      * @Secure(roles="ROLE_REMOTE_UPDATER")
@@ -28,8 +28,8 @@ class RestController extends Controller
      */
     public function getUpdatesAction(Request $request, $remote)
     {
-		return $this->getDoctrine()->getEntityManager()
-			->getRepository("MopaRemoteUpdateBundle:UpdateJob")
-			->getLastJobs($request->get('count', 1));
+        return $this->getDoctrine()->getEntityManager()
+            ->getRepository("MopaRemoteUpdateBundle:UpdateJob")
+            ->getLastJobs($request->get('count', 1));
     }
 }

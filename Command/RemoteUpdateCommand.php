@@ -27,17 +27,17 @@ class RemoteUpdateCommand extends ContainerAwareCommand
         $remote = $input->getArgument('remote');
         $output->writeln("Starting remote update on $remote ... ");
         try{
-        	$job = $this->getContainer()
-        				->get('mopa_remote_update_service')
-        				->update($remote);
-        	$output->writeln("Status: " . ($job->getStatusMessage()));
-        	if( $output->getVerbosity() > 1){
-        		$output->writeln("Got from Remote $remote:");
-        		$output->writeln($job->getMessage());
-        	}
+            $job = $this->getContainer()
+                        ->get('mopa_remote_update_service')
+                        ->update($remote);
+            $output->writeln("Status: " . ($job->getStatusMessage()));
+            if ( $output->getVerbosity() > 1) {
+                $output->writeln("Got from Remote $remote:");
+                $output->writeln($job->getMessage());
+            }
         }
-        catch(HavingJobPendingException $e){
-        	$output->writeln("<comment>" . $e->getMessage() . "</comment>");
+        catch(HavingJobPendingException $e) {
+            $output->writeln("<comment>" . $e->getMessage() . "</comment>");
         }
 
     }

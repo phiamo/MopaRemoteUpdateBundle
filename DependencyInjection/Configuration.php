@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
         $this->addLocalConfig($rootNode);
         return $treeBuilder;
     }
-    protected function addLocalConfig(ArrayNodeDefinition $rootNode){
+    protected function addLocalConfig(ArrayNodeDefinition $rootNode) {
         $rootNode
             ->children()
                 ->scalarNode('composer')
@@ -32,7 +32,7 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
     }
-    protected function addRemotesConfig(ArrayNodeDefinition $rootNode){
+    protected function addRemotesConfig(ArrayNodeDefinition $rootNode) {
         $rootNode
             ->children()
                 ->arrayNode('remotes')
@@ -41,10 +41,10 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('preUpdate')
-                            	->defaultValue(false)
+                                ->defaultValue(false)
                                 ->end()
                             ->scalarNode('postUpdate')
-                            	->defaultValue(false)
+                                ->defaultValue(false)
                                 ->end()
                             ->scalarNode('url')
                                 ->end()
@@ -53,19 +53,19 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('password')
                                 ->end()
                             ->arrayNode('environments')
-                            	->defaultValue(array("dev"))
+                                ->defaultValue(array("dev"))
                                 ->requiresAtLeastOneElement()
                                 ->beforeNormalization()
-                                    ->ifTrue(function($v){ return !is_array($v); })
-                                    ->then(function($v){ return array($v); })
+                                    ->ifTrue(function($v) { return !is_array($v); })
+                                    ->then(function($v) { return array($v); })
                                 ->end()
                                 ->prototype('scalar')->end()
                             ->end()
                             ->scalarNode('updater')
-                            	->defaultValue("live")
+                                ->defaultValue("live")
                             ->end()
                             ->scalarNode('timeout')
-                            	->defaultValue(5 * 60) // 5 min
+                                ->defaultValue(5 * 60) // 5 min
                             ->end()
                         ->end()
                     ->end()

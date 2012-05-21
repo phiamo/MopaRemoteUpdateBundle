@@ -13,10 +13,10 @@ use JMS\SerializerBundle\Annotation as Serializer;
  */
 class UpdateJob
 {
-	const STATUS_PENDING = 0;
-	const STATUS_RUNNING = 1;
-	const STATUS_SUCCESS = 2;
-	const STATUS_FAILED = 3;
+    const STATUS_PENDING = 0;
+    const STATUS_RUNNING = 1;
+    const STATUS_SUCCESS = 2;
+    const STATUS_FAILED = 3;
 
     /**
      * @var integer $id
@@ -201,8 +201,8 @@ class UpdateJob
      */
     public function addMessage($message)
     {
-    	$this->message .= $message;
-    	return $this;
+        $this->message .= $message;
+        return $this;
     }
 
     /**
@@ -259,16 +259,16 @@ class UpdateJob
         return $this->status;
     }
 
-    public function getStatusMessage(){
-    	switch($this->status){
-    		case self::STATUS_PENDING:
-    			return "<comment>pending</comment>";
-    		case self::STATUS_RUNNING:
-    			return "<comment>running</comment>";
-    		case self::STATUS_PENDING:
-    			return "<info>success</info>";
-    		case self::STATUS_FAILED:
-    			return "<error>failed</error>";
-    	}
+    public function getStatusMessage() {
+        switch($this->status) {
+            case self::STATUS_PENDING:
+                return "<comment>pending</comment>";
+            case self::STATUS_RUNNING:
+                return "<comment>running</comment>";
+            case self::STATUS_PENDING:
+                return "<info>success</info>";
+            case self::STATUS_FAILED:
+                return "<error>failed</error>";
+        }
     }
 }

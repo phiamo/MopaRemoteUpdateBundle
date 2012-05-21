@@ -11,9 +11,9 @@ class LocalUpdateCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-	        ->setName('mopa:update:local')
-	        ->setDescription('update local installation')
-	        ->addArgument('remote', InputArgument::REQUIRED, 'Which remote config to use?')
+            ->setName('mopa:update:local')
+            ->setDescription('update local installation')
+            ->addArgument('remote', InputArgument::REQUIRED, 'Which remote config to use?')
         ;
     }
 
@@ -23,12 +23,12 @@ class LocalUpdateCommand extends ContainerAwareCommand
 
         $output->writeln("Starting local update with conf for $remote ... ");
         $job = $this->getContainer()
-        				->get('mopa_local_update_service')
-        				->update($remote, "local");
+                        ->get('mopa_local_update_service')
+                        ->update($remote, "local");
         $output->writeln("Status: " . $job->getStatusMessage());
-        if( $output->getVerbosity() > 1){
-        	$output->writeln("Got from Remote $remote:");
-        	$output->writeln($job->getMessage());
+        if ( $output->getVerbosity() > 1) {
+            $output->writeln("Got from Remote $remote:");
+            $output->writeln($job->getMessage());
         }
         $output->writeln("done.");
 

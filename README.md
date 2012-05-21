@@ -34,8 +34,8 @@ public function registerBundles()
         new Mopa\Bundle\RemoteUpdateBundle\MopaRemoteUpdateBundle(),
         new Mopa\Bundle\WSSEAuthenticationBundle\MopaWSSEAuthenticationBundle(),
         new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
-    	new FOS\RestBundle\FOSRestBundle(),
-    	new JMS\SerializerBundle\JMSSerializerBundle($this)
+        new FOS\RestBundle\FOSRestBundle(),
+        new JMS\SerializerBundle\JMSSerializerBundle($this)
         // ...
     );
 }

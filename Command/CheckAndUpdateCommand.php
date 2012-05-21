@@ -12,8 +12,8 @@ class CheckAndUpdateCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-	        ->setName('mopa:update:checkandupdate')
-	        ->setDescription('update local installation if there are new jobs')
+            ->setName('mopa:update:checkandupdate')
+            ->setDescription('update local installation if there are new jobs')
         ;
     }
 
@@ -21,20 +21,20 @@ class CheckAndUpdateCommand extends ContainerAwareCommand
     {
         $updateService = $this->getContainer()->get('mopa_local_update_service');
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
-        if($job = $em->getRepository("MopaRemoteUpdateBundle:UpdateJob")->getPendingJob()){
-			$remote = $job->getRemote();
-	        $output->writeln("Starting local update with conf for $remote ... ");
-        	$updateService->doUpdate($job);
-        	$output->writeln("Status: " . ($job->getStatusMessage()));
-	        if( $output->getVerbosity() > 1){
-	        	$output->writeln("Got from Remote $remote:");
-	        	$output->writeln($job->getMessage());
-	        }
+        if ($job = $em->getRepository("MopaRemoteUpdateBundle:UpdateJob")->getPendingJob()) {
+            $remote = $job->getRemote();
+            $output->writeln("Starting local update with conf for $remote ... ");
+            $updateService->doUpdate($job);
+            $output->writeln("Status: " . ($job->getStatusMessage()));
+            if ( $output->getVerbosity() > 1) {
+                $output->writeln("Got from Remote $remote:");
+                $output->writeln($job->getMessage());
+            }
         }
-        else{
-	        if( $output->getVerbosity() > 1){
-	        	$output->writeln("Nothing to do.");
-	        }
+        else {
+            if ( $output->getVerbosity() > 1) {
+                $output->writeln("Nothing to do.");
+            }
         }
     }
 }

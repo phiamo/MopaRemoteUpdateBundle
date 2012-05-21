@@ -12,23 +12,23 @@ use Symfony\Component\DependencyInjection\Loader;
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
 class MopaRemoteUpdateExtension extends Extension {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function load(array $configs, ContainerBuilder $container) {
-		$configuration = new Configuration();
-		$config = $this->processConfiguration($configuration, $configs);
+    /**
+     * {@inheritDoc}
+     */
+    public function load(array $configs, ContainerBuilder $container) {
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
 
-		$loader = new Loader\YamlFileLoader($container,
-		    new FileLocator(__DIR__ . '/../Resources/config'));
-		$loader->load('services.yml');
-		$container
-			->setParameter('mopa_remote_update.composer', $config['composer']);
-		// register filters
-		foreach ($config['remotes'] as $name => $conf) {
-			$container
-				->setParameter('mopa_remote_update.remotes.' . $name, $conf);
-		}
+        $loader = new Loader\YamlFileLoader($container,
+            new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+        $container
+            ->setParameter('mopa_remote_update.composer', $config['composer']);
+        // register filters
+        foreach ($config['remotes'] as $name => $conf) {
+            $container
+                ->setParameter('mopa_remote_update.remotes.' . $name, $conf);
+        }
 
-	}
+    }
 }
