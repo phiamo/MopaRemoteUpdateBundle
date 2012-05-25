@@ -265,7 +265,7 @@ class UpdateJob
                 return "<comment>pending</comment>";
             case self::STATUS_RUNNING:
                 return "<comment>running</comment>";
-            case self::STATUS_PENDING:
+            case self::STATUS_SUCCESS:
                 return "<info>success</info>";
             case self::STATUS_FAILED:
                 return "<error>failed</error>";
