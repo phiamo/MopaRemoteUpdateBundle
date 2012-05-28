@@ -34,7 +34,7 @@ class RemoteUpdateService extends AbstractUpdateService{
             if ($code = json_last_error()) {
                 throw new \RuntimeException("Couldnt decode Json for $path: Code $code\n Response:".$response->getContent());
             }
-            throw new Exceptions\RemoteException($error->message, $error->status_code);
+            throw new Exceptions\RemoteException($error->message . $error->status_text, $error->status_code);
         }
         return $response;
     }
