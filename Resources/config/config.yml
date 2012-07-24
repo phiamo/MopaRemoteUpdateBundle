@@ -4,10 +4,10 @@ fos_rest:
             json: true
         view_response_listener: force
     format_listener:
-        default_priorities: ['json', html, '*/*']
-        fallback_format: json
+        default_priorities: [html, 'json', '*/*']
+        fallback_format: html
     routing_loader:
-        default_format: json
+        default_format: html
 
 twig:
     exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
